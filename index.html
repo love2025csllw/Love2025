@@ -36,8 +36,8 @@ img, video {
 </head>
 
 <body>
-<audio autoplay loop>
-  <source src="music.mp3" type="audio/mpeg">
+<audio id="bgm" autoplay loop>
+  <source src="../Documents/GitHub/Love2025/music.mp3" type="audio/mpeg">
 </audio>
 
 <div id="slideshow"></div>
@@ -116,14 +116,16 @@ const photos = [
 let index = 0;
 const container = document.getElementById("slideshow");
 const textBox = document.getElementById("text");
+const bgm = document.getElementById("bgm");
 
 photos.forEach(p => {
   const media = document.createElement(p.src.endsWith('.mp4') ? 'video' : 'img');
   media.src = p.src;
   if (p.src.endsWith('.mp4')) {
-    media.autoplay = true;
-    media.loop = true;
-    media.muted = true;
+    media.autoplay = false;
+    media.loop = false;
+    media.muted = false;
+    media.playsInline = true;
   }
   container.appendChild(media);
 });
@@ -131,14 +133,42 @@ photos.forEach(p => {
 const medias = document.querySelectorAll("img, video");
 
 function show() {
-  medias.forEach(m => m.style.opacity = 0);
-  medias[index].style.opacity = 1;
-  textBox.innerText = photos[index].text;
-  index = (index + 1) % photos.length;
+  medias.forEach(m => {
+    m.style.opacity = 0;
+    if (m.tagName === "VIDEO") {
+      m.pause();
+      m.currentTime = 0;
+    }
+  });
+
+  const current = medias[index];
+  const currentData = photos[index];
+
+  current.style.opacity = 1;
+  textBox.innerText = currentData.text;
+
+  if (current.tagName === "VIDEO") {
+    // 视频播放时，降低背景音乐音量
+    if (bgm) bgm.volume = 0.2;
+
+    current.play();
+    current.onended = () => {
+      if (bgm) bgm.volume = 1.0;
+      index = (index + 1) % photos.length;
+      show();
+    };
+  } else {
+    // 图片时，恢复背景音乐音量
+    if (bgm) bgm.volume = 1.0;
+
+    setTimeout(() => {
+      index = (index + 1) % photos.length;
+      show();
+    }, 3000);
+  }
 }
 
 show();
-setInterval(show, 3000);
 </script>
 
 </body>
