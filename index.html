@@ -15,7 +15,7 @@ body {
   width: 100%;
   height: 100%;
 }
-img, video {
+img {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -113,27 +113,15 @@ const textBox = document.getElementById("text");
 const bgm = document.getElementById("bgm");
 
 photos.forEach(p => {
-  const media = document.createElement(p.src.endsWith('.mp4') ? 'video' : 'img');
-  media.src = p.src;
-  if (p.src.endsWith('.mp4')) {
-    media.autoplay = false;
-    media.loop = false;
-    media.muted = false;
-    media.playsInline = true;
-  }
-  container.appendChild(media);
+  const img = document.createElement('img');
+  img.src = p.src;
+  container.appendChild(img);
 });
 
-const medias = document.querySelectorAll("img, video");
+const medias = document.querySelectorAll("img");
 
 function show() {
-  medias.forEach(m => {
-    m.style.opacity = 0;
-    if (m.tagName === "VIDEO") {
-      m.pause();
-      m.currentTime = 0;
-    }
-  });
+  medias.forEach(m => m.style.opacity = 0);
 
   const current = medias[index];
   const currentData = photos[index];
@@ -141,25 +129,10 @@ function show() {
   current.style.opacity = 1;
   textBox.innerText = currentData.text;
 
-  if (current.tagName === "VIDEO") {
-    // 视频播放时，降低背景音乐音量
-    if (bgm) bgm.volume = 0.2;
-
-    current.play();
-    current.onended = () => {
-      if (bgm) bgm.volume = 1.0;
-      index = (index + 1) % photos.length;
-      show();
-    };
-  } else {
-    // 图片时，恢复背景音乐音量
-    if (bgm) bgm.volume = 1.0;
-
-    setTimeout(() => {
-      index = (index + 1) % photos.length;
-      show();
-    }, 3000);
-  }
+  setTimeout(() => {
+    index = (index + 1) % photos.length;
+    show();
+  }, 3000);
 }
 
 show();
