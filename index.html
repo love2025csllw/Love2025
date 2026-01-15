@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>我们的 2025</title>
+<style>
+body {
+  margin: 0;
+  background: black;
+  overflow: hidden;
+  font-family: "微软雅黑", sans-serif;
+}
+#slideshow {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+img, video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 2s;
+}
+#text {
+  position: absolute;
+  bottom: 8%;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 28px;
+  text-shadow: 0 0 10px black;
+}
+</style>
+</head>
+
+<body>
+<audio autoplay loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div id="slideshow"></div>
+<div id="text"></div>
+
+<script>
+const photos = [
+  {src: "photos/1.jpg", text: "2025年2月5日，在那家我们常去的咖啡馆，你点头的瞬间，我知道这是一生的约定"},
+  {src: "photos/100.mp4", text: "除夕夜的烟花下，你紧紧牵着我的手，眼里的光比星空还要闪亮"},
+  {src: "photos/2.jpg", text: "第一次牵你的手是在普照寺的梧桐道，你的手心有点凉，却让我心跳加速"},
+  {src: "photos/3.jpg", text: "情人节的人潮中，你穿着那件白色毛衣，是我唯一想靠近的温暖"},
+  {src: "photos/4.jpg", text: "一起看的第一场电影是哪吒之魔童降世，散场时你悄悄擦眼泪的样子，比剧情更动人"},
+  {src: "photos/5.jpg", text: "春日的樱花树下，你的笑容比花瓣更灿烂，风一吹，连空气都变甜了"},
+  {src: "photos/6.jpg", text: "第一次旅行去了栈桥，青石板路上我们的脚印，是最珍贵的纪念"},
+  {src: "photos/7.jpg", text: "海边的日落时分，海风替我对你说了千万遍喜欢，你笑着说你听见了"},
+  {src: "photos/8.jpg", text: "周末一起散步的老街，我们数着路灯走了很久，每一步都是最美的回忆"},
+  {src: "photos/9.jpg", text: "夏天的阳台，我们躺在凉席上数星星，你指着最亮的那颗说那是我们的星"},
+  {src: "photos/10.jpg", text: "第一次为你做的番茄炒蛋，有点咸，但你吃得干干净净，说这是最好吃的菜"},
+  {src: "photos/11.jpg", text: "那天，我偷偷准备了蛋糕，你许愿时闭着眼睛的模样，是我最珍贵的礼物"},
+  {src: "photos/12.jpg", text: "秋天的银杏林里，你捡了一片最黄的叶子给我，说要把最美的秋天留给我"},
+  {src: "photos/13.jpg", text: "一起逛栈桥的下午，你试了很多贴纸，每一套都很好看，最后却只买了我喜欢的那件"},
+  {src: "photos/14.jpg", text: "第一次吵架后，你红着眼睛来找我，我们抱着哭了很久，原来更怕失去彼此"},
+  {src: "photos/15.jpg", text: "山顶的日落真美，你靠在我肩膀上，说希望时间永远停在这一刻"},
+  {src: "photos/101.mp4", text: "夕阳下的沙滩上，我们的剪影被拉得很长，你的手始终在我手心"},
+  {src: "photos/16.jpg", text: "冬天的周末，我们窝在沙发上喝热可可，你的手暖乎乎的，比任何暖茶都温暖"},
+  {src: "photos/17.jpg", text: "一起堆的雪人戴着你的围巾，你说它像我们的孩子，要一起守护它"},
+  {src: "photos/18.jpg", text: "久别重逢的拥抱，你身上的味道没变，我知道这就是家的感觉"},
+  {src: "photos/19.jpg", text: "从春到冬，从清晨到黄昏，四季变换，唯有我们的爱情始终如一"},
+  {src: "photos/20.jpg", text: "我们在山顶倒数，我们依然相爱如初"},
+  {src: "photos/21.jpg", text: "未来的日子很长，我想和你一起看遍所有风景，一起度过每一个平凡又浪漫的瞬间"},
+  {src: "photos/22.jpg", text: "情人节的玫瑰再美，也不及你看见花时嘴角上扬的笑意"},
+  {src: "photos/23.jpg", text: "一起逛超市的周末，推着购物车讨论晚餐吃什么，柴米油盐也变得浪漫起来"},
+  {src: "photos/24.jpg", text: "雨后的彩虹，是我们爱情的新开始"},
+  {src: "photos/25.jpg", text: "一起做的手工，是我们共同的回忆"},
+  {src: "photos/26.jpg", text: "电影院的角落，你的肩膀是我最温暖的依靠"},
+  {src: "photos/27.jpg", text: "春天的樱花树下，我们许下新的愿望"},
+  {src: "photos/102.mp4", text: "樱花飘落的瞬间，我只想永远停留在这一刻"},
+  {src: "photos/28.jpg", text: "一起爬山的汗水，是我们坚持的证明"},
+  {src: "photos/29.jpg", text: "山顶的风景，因为有你才更美丽"},
+  {src: "photos/30.jpg", text: "一起吃的冰淇淋，甜到了心里"},
+  {src: "photos/31.jpg", text: "夏天的海浪声，是我们爱情的旋律"},
+  {src: "photos/32.jpg", text: "一起捡的贝壳，是大海送给我们的礼物"},
+  {src: "photos/33.jpg", text: "夜晚的篝火旁，我们互相取暖"},
+  {src: "photos/103.mp4", text: "篝火的光芒，映照着我们幸福的脸庞"},
+  {src: "photos/34.jpg", text: "秋天的果园里，一起采摘的果实格外甜"},
+  {src: "photos/35.jpg", text: "一起拍的写真，记录了我们最美的样子"},
+  {src: "photos/36.jpg", text: "一起看的演唱会，我们随着音乐摇摆"},
+  {src: "photos/37.jpg", text: "冬天的滑雪场，我们一起摔倒又爬起"},
+  {src: "photos/38.jpg", text: "一起泡的温泉，温暖了整个冬天"},
+  {src: "photos/39.jpg", text: "一起写的日记，记录了我们的点点滴滴"},
+  {src: "photos/40.jpg", text: "一起种的花，终于绽放了"},
+  {src: "photos/104.mp4", text: "花开的瞬间，仿佛看到了我们爱情的绽放"},
+  {src: "photos/41.jpg", text: "一起做的蛋糕，虽然丑却很甜蜜"},
+  {src: "photos/42.jpg", text: "一起看的流星雨，我们许下了同样的愿望"},
+  {src: "photos/43.jpg", text: "一起坐的摩天轮，在最高处许下诺言"},
+  {src: "photos/44.jpg", text: "一起逛的书店，我们找到了共同的爱好"},
+  {src: "photos/45.jpg", text: "一起养的宠物，是我们爱情的小结晶"},
+  {src: "photos/46.jpg", text: "一起看的展览，艺术因为有你而更有意义"},
+  {src: "photos/47.jpg", text: "一起做的运动，我们变得更健康"},
+  {src: "photos/105.mp4", text: "运动后的微笑，是我见过最动人的表情"},
+  {src: "photos/48.jpg", text: "一起煮的火锅，热热闹闹的幸福"},
+  {src: "photos/49.jpg", text: "一起看的日出，新的一天因为有你而美好"},
+  {src: "photos/50.jpg", text: "一起去的图书馆，安静的时光也很珍贵"},
+  {src: "photos/51.jpg", text: "一起买的情侣装，走到哪里都要秀恩爱"},
+  {src: "photos/52.jpg", text: "一起做的早餐，开启美好的一天"},
+  {src: "photos/53.jpg", text: "一起看的纪录片，我们有了更多共同话题"},
+  {src: "photos/54.jpg", text: "一起去的动物园，你比动物更可爱"},
+  {src: "photos/55.jpg", text: "一起拍的抖音，记录了我们的搞笑日常"},
+  {src: "photos/56.jpg", text: "一起做的义工，我们的爱情更有意义"},
+  {src: "photos/57.jpg", text: "一起看的舞台剧，艺术的魅力让我们更靠近"},
+  {src: "photos/58.jpg", text: "一起参加的婚礼，我们对未来更期待"},
+  {src: "photos/59.jpg", text: "一起跨的年，烟花下的吻是最好的礼物"},
+  {src: "photos/60.jpg", text: "2026年，我们一起回顾过往这一年的美好，我们的路还很长，我们的未来依旧会在一起"}
+];
+
+let index = 0;
+const container = document.getElementById("slideshow");
+const textBox = document.getElementById("text");
+
+photos.forEach(p => {
+  const media = document.createElement(p.src.endsWith('.mp4') ? 'video' : 'img');
+  media.src = p.src;
+  if (p.src.endsWith('.mp4')) {
+    media.autoplay = true;
+    media.loop = true;
+    media.muted = true;
+  }
+  container.appendChild(media);
+});
+
+const medias = document.querySelectorAll("img, video");
+
+function show() {
+  medias.forEach(m => m.style.opacity = 0);
+  medias[index].style.opacity = 1;
+  textBox.innerText = photos[index].text;
+  index = (index + 1) % photos.length;
+}
+
+show();
+setInterval(show, 3000);
+</script>
+
+</body>
+</html>
